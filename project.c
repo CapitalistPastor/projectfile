@@ -10,9 +10,23 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 
 /* instruction fetch */
 /* 10 Points */
+
+//  Pre-processor directives: This function takes in PC from Mem and stores it in instruction.
+//  Post-processor directives: function returns 1 if halt condition is met. Otherwise, return 0.
 int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 {
-
+  //  Check if PC is word-aligned (divisible by 4) or beyond the scope of the memory of 64 kB.
+  if(PC%4 != 0 || PC > 65536)
+  {
+    return 1;
+  }
+  else
+  {
+    //  Get the instruction from Mem
+    *instruction = Mem[PC>>2];
+    return 0;
+  }
+    
 }
 
 
