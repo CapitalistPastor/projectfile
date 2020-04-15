@@ -10,9 +10,13 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 
 /* instruction fetch */
 /* 10 Points */
+/* This function takes the program counter from Mem, writing it to instruction.
+/*  Returns 1 if a halt condition occurs. Otherwise; return 0.
 int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 {
-
+  // 
+  return 1;
+  return 0;
 }
 
 
