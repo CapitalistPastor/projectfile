@@ -101,16 +101,16 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 
 void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsigned *r2, unsigned *r3, unsigned *funct, unsigned *offset, unsigned *jsec)
 {
-	*op = instruction >> 26;	//	bits 31-26
-	*r1 = instruction >> 21 &0x1F;	//	bits 25-21
-	*r2 = instruction >> 16 &0x1F;	//	bits 20-16
-	*r3 = instruction >> 11	&0x1F;	//	bits 15-11
+	*op = instruction >> 26;		//	bits 31-26
+	*r1 = instruction >> 21 &0x1F;		//	bits 25-21
+	*r2 = instruction >> 16 &0x1F;		//	bits 20-16
+	*r3 = instruction >> 11	&0x1F;		//	bits 15-11
 	
 	//	The following don't require a shift since they approach the highest order bits.
 	
-	*funct = instruction 0x3F;
-	*offset = instruction & 0xFFFF;
-	*jsec = instruction & 0x3FFFFFF;
+	*funct = instruction 0x3F;		//	bits 5-0
+	*offset = instruction & 0xFFFF;		//	bits 15-0
+	*jsec = instruction & 0x3FFFFFF;	//	bits 25-0
 }
 
 
