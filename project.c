@@ -338,6 +338,15 @@ void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,
 /* 10 Points */
 void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char Zero,unsigned *PC)
 {
+	// Update program counter to the next word
+   	*PC += 4;
 
+    	// If Branch equal 1 and Zero equal 1, offset the program counter by shifting it left by 2 bits
+    	if(Zero == 1 && Branch == 1)
+        *PC += extended_value << 2;
+
+    	// If Jump equal 1, use upper four bits, shift left by 2 bit, you'll get left with one word or 32 bits
+    	if(Jump == 1)
+        *PC = (jsec << 2) | (*PC & 0xf0000000);
 }
 
