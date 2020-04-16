@@ -6,7 +6,7 @@
 /* ALU */
 /* 10 Points */
 
-// Al//
+// Ais DONE
 void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 {
 // 1.Implement the operations on input parameters A and B according to ALUControl.
@@ -124,7 +124,7 @@ void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsi
 /* 15 Points */
 int instruction_decode(unsigned op,struct_controls *controls)
 {
-
+    return 0;
 }
 
 // Kev //
@@ -135,12 +135,20 @@ void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigne
 
 }
 
-// Al //
+// Ais DONE
 /* Sign Extend */
 /* 10 Points */
 void sign_extend(unsigned offset,unsigned *extended_value)
 {
+    // Shifting to the sign bit (requires a shift of 15)
+    // If that significant bit is 1 which is negative then we,
+    // Ihen we expand to 32 bits, all the new bits being being 1's
+    if((offset >> 15) == 1)
+        *extended_value = offset | 0xffff0000;
 
+    // else if it's not negative we just keep the 16 bits the other 16 bits will stay zero
+    else
+        *extended_value = offset & 0x0000ffff;
 }
 
 // Dimitri //
@@ -148,7 +156,7 @@ void sign_extend(unsigned offset,unsigned *extended_value)
 /* 10 Points */
 int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigned funct,char ALUOp,char ALUSrc,unsigned *ALUresult,char *Zero)
 {
-
+    return 0;
 }
 
 // Dimitri //
@@ -156,7 +164,7 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 /* 10 Points */
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
 {
-
+    return 0;
 }
 
 // Dimitri//
@@ -167,11 +175,20 @@ void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,
 
 }
 
-// Al //
+// Ais DONE
 /* PC update */
 /* 10 Points */
 void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char Zero,unsigned *PC)
 {
+    // Update program counter to the next word
+    *PC += 4;
 
+    // If Branch equal 1 and Zero equal 1, offset the program counter by shifting it left by 2 bits
+    if(Zero == 1 && Branch == 1)
+        *PC += extended_value << 2;
+
+    // If Jump equal 1, use upper four bits, shift left by 2 bit, you'll get left with one word or 32 bits
+    if(Jump == 1)
+        *PC = (jsec << 2) | (*PC & 0xf0000000);
 }
 
