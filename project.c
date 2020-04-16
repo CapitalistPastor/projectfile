@@ -119,7 +119,7 @@ void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsi
 }
 
 
-// Kev //
+// Kev - Done //
 /* instruction decode */
 /* 15 Points */
 
@@ -284,9 +284,14 @@ int instruction_decode(unsigned op,struct_controls *controls)
 // Kev //
 /* Read Register */
 /* 5 Points */
+
+//	Read the registers addressed by r1 and r2 from Reg, 
+//	and write the read values to data1 and data2 respectively.
+
 void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigned *data2)
 {
-
+	*data1 = Reg[r1];
+	*data2 = Reg[r2];
 }
 
 // Al //
