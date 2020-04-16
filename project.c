@@ -5,6 +5,64 @@
 /* 10 Points */
 void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 {
+// 1.Implement the operations on input parameters A and B according to ALUControl.
+// 2. Output the result (Z) to ALUresult.
+
+	//  Using switches to control which ALU control gets executed
+	switch ((int) ALUControl)
+	{
+    // 000: Z = A + B "Addition"
+	case 000:
+		*ALUresult = A + B;
+		break;
+
+    // 001: Z = A - B "Subtraction"
+	case 001:
+		*ALUresult = A - B;
+		break;
+
+    // 010: if A < B, Z = 1; otherwise, Z = 0 (For signed integers) "Less than"
+	case 010:
+		if ((signed)A < (signed)B)
+			*ALUresult = 1;
+		else
+            *ALUresult = 0;
+		break;
+
+    // 011: if A < B, Z = 1; otherwise, Z = 0 (For unsigned integers) "Less than"
+	case 011:
+		if (A < B)
+			*ALUresult = 1;
+		else
+			*ALUresult = 0;
+		break;
+
+    // 100: Z = A AND B "bitwise AND"
+	case 100:
+		*ALUresult = A & B;
+		break;
+
+    // 101: Z = A OR B "bitwise OR"
+	case 101:
+		*ALUresult = A | B;
+		break;
+
+    // 110: Shift left B by 16 bits
+	case 110:
+        *ALUresult = B << 16;
+		break;
+
+    // 111: Z = NOT A (bitwise)
+	case 111:
+		*ALUresult = ~A;
+		break;
+	}
+
+    // 3. Assign Zero to 1 if the result is zero; otherwise, assign 0.
+	if (*ALUresult == 0)
+		*Zero = 1;
+	else
+		*Zero = 0;
 
 }
 
