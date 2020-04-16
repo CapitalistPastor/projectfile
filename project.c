@@ -6,7 +6,7 @@
 /* ALU */
 /* 10 Points */
 
-// Ais DONE
+// Al//
 void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 {
 // 1.Implement the operations on input parameters A and B according to ALUControl.
@@ -122,9 +122,163 @@ void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsi
 // Kev //
 /* instruction decode */
 /* 15 Points */
+
+	//	Depending on the instruction type (determined by the op), enable, disable, or dc the corresponding signal.
+
 int instruction_decode(unsigned op,struct_controls *controls)
 {
-    return 0;
+	//	Set the following in the manner described: 1 = enable, 0 = disable, 2 = dc
+	//	MemRead: 	operation reads from memory
+	//	MemWrite: 	operations writes to memory
+	//	RegWrite:	operation writes to register
+	
+	//	RegDst:		Signal is 0 if storing in r2, 1 if storing in r3 (r-type inst)
+	//	Jump:		Jump instruction
+	//	Branch:		Branch instruction
+	//	MemtoReg:	Memory info is stored in regsiter
+	//	ALUSrc:		0 if r2 register is the source (r-type), 1 if source is the sign-extended value
+	//	ALUOp:		0 = add/dc, 1 = sub, 2 = slt, 3 = sltu, 4 = and, 5 = or, 6 = sll, 7 = r-type
+	
+	//	R-type instructions
+	if(op == 0)
+	{
+		controls->RegDst = '1';
+		controls->Jump = '0';
+		controls->Branch = '0';
+		controls->MemRead = '0';
+		controls->MemtoReg = '0';
+		controls->ALUOp = '7';
+		controls ->MemWrite = '0';
+		controls->ALUSrc = '0';
+		controls ->RegWrite = '1';
+		return 0;
+	}
+	
+	//	J-type instructions 
+	else if(op == 2)
+	{
+		controls->RegDst = '2';
+		controls->Jump = '1';
+		controls->Branch = '0';
+		controls->MemRead = '0';
+		controls->MemtoReg = '0';
+		controls->ALUOp = '0';
+		controls ->MemWrite = '0';
+		controls->ALUSrc = '1';
+		controls ->RegWrite = '0';
+		return 0;
+	}
+	
+	//	Beq instruction
+	else if(op == 4)
+	{
+		controls->RegDst = '2';
+		controls->Jump = '0';
+		controls->Branch = '1';
+		controls->MemRead = '0';
+		controls->MemtoReg = '0';
+		controls->ALUOp = '1';
+		controls ->MemWrite = '0';
+		controls->ALUSrc = '0';
+		controls ->RegWrite = '0';
+		return 0;
+	}
+	
+	//	addi instruction
+	else if(op == 8)
+	{
+		controls->RegDst = '0';
+		controls->Jump = '0';
+		controls->Branch = '0';
+		controls->MemRead = '0';
+		controls->MemtoReg = '0';
+		controls->ALUOp = '0';
+		controls ->MemWrite = '0';
+		controls->ALUSrc = '1';
+		controls ->RegWrite = '1';
+		return 0;
+	}
+	
+	//	slti instruction
+	else if(op == 10)
+	{
+		controls->RegDst = '0';
+		controls->Jump = '0';
+		controls->Branch = '0';
+		controls->MemRead = '0';
+		controls->MemtoReg = '0';
+		controls->ALUOp = '2';
+		controls ->MemWrite = '0';
+		controls->ALUSrc = '1';
+		controls ->RegWrite = '1';
+		return 0;
+	}
+	
+	//	sltiu instruction
+	else if(op == 11)
+	{
+		controls->RegDst = '0';
+		controls->Jump = '0';
+		controls->Branch = '2';
+		controls->MemRead = '0';
+		controls->MemtoReg = '0';
+		controls->ALUOp = '3';
+		controls ->MemWrite = '0';
+		controls->ALUSrc = '1';
+		controls ->RegWrite = '1';
+		return 0;
+	}
+	
+	//	lui instruction
+	else if(op == 15)
+	{
+		controls->RegDst = '0';
+		controls->Jump = '0';
+		controls->Branch = '0';
+		controls->MemRead = '0';
+		controls->MemtoReg = '0';
+		controls->ALUOp = '6';
+		controls ->MemWrite = '0';
+		controls->ALUSrc = '1';
+		controls ->RegWrite = '1';
+		return 0;
+	}
+	
+	//	lw instruction
+	else if(op == 35)
+	{
+		controls->RegDst = '0';
+		controls->Jump = '0';
+		controls->Branch = '0';
+		controls->MemRead = '1';
+		controls->MemtoReg = '1';
+		controls->ALUOp = '0';
+		controls ->MemWrite = '0';
+		controls->ALUSrc = '1';
+		controls ->RegWrite = '1';
+		return 0;
+	}
+	
+	//	sw instruction
+	else if(op == 43)
+	{
+		controls->RegDst = '2';
+		controls->Jump = '0';
+		controls->Branch = '0';
+		controls->MemRead = '0';
+		controls->MemtoReg = '0';
+		controls->ALUOp = '0';
+		controls ->MemWrite = '1';
+		controls->ALUSrc = '1';
+		controls ->RegWrite = '0';
+		return 0;
+	}
+	
+	//	illegal instruction, halt condition.
+	else
+	{
+		return 1;
+	}
 }
 
 // Kev //
@@ -135,20 +289,12 @@ void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigne
 
 }
 
-// Ais DONE
+// Al //
 /* Sign Extend */
 /* 10 Points */
 void sign_extend(unsigned offset,unsigned *extended_value)
 {
-    // Shifting to the sign bit (requires a shift of 15)
-    // If that significant bit is 1 which is negative then we,
-    // Ihen we expand to 32 bits, all the new bits being being 1's
-    if((offset >> 15) == 1)
-        *extended_value = offset | 0xffff0000;
 
-    // else if it's not negative we just keep the 16 bits the other 16 bits will stay zero
-    else
-        *extended_value = offset & 0x0000ffff;
 }
 
 // Dimitri //
@@ -156,7 +302,7 @@ void sign_extend(unsigned offset,unsigned *extended_value)
 /* 10 Points */
 int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigned funct,char ALUOp,char ALUSrc,unsigned *ALUresult,char *Zero)
 {
-    return 0;
+
 }
 
 // Dimitri //
@@ -164,7 +310,7 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 /* 10 Points */
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
 {
-    return 0;
+
 }
 
 // Dimitri//
@@ -175,20 +321,11 @@ void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,
 
 }
 
-// Ais DONE
+// Al //
 /* PC update */
 /* 10 Points */
 void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char Zero,unsigned *PC)
 {
-    // Update program counter to the next word
-    *PC += 4;
 
-    // If Branch equal 1 and Zero equal 1, offset the program counter by shifting it left by 2 bits
-    if(Zero == 1 && Branch == 1)
-        *PC += extended_value << 2;
-
-    // If Jump equal 1, use upper four bits, shift left by 2 bit, you'll get left with one word or 32 bits
-    if(Jump == 1)
-        *PC = (jsec << 2) | (*PC & 0xf0000000);
 }
 
