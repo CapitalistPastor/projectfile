@@ -306,7 +306,15 @@ void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigne
 /* 10 Points */
 void sign_extend(unsigned offset,unsigned *extended_value)
 {
+    // Shifting to the sign bit (requires a shift of 15)
+    // If that significant bit is 1 which is negative then we,
+    // Ihen we expand to 32 bits, all the new bits being being 1's
+    if((offset >> 15) == 1)
+        *extended_value = offset | 0xffff0000;
 
+    // else if it's not negative we just keep the 16 bits the other 16 bits will stay zero
+    else
+        *extended_value = offset & 0x0000ffff;
 }
 
 // Dimitri //
