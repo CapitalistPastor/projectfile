@@ -3,6 +3,9 @@
 //			Once you finish a function, please add a comment saying you're done at the top
 //			to keep us updated. Thanks.
 
+//			Reminder: Once the code compiles, delete all unnecessary comments.
+
+
 /* ALU */
 /* 10 Points */
 
@@ -72,7 +75,9 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 
 /* instruction fetch */
 /* 10 Points */
+
 /**KEVIN - DONE**/
+
 //  Pre-processor directives: This function takes in PC from Mem and stores it in instruction.
 //  Post-processor directives: function returns 1 if halt condition is met. Otherwise, return 0.
 int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
@@ -94,6 +99,7 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 
 /* instruction partition */ 
 /* 10 Points */
+
 //**KEVIN - DONE**//
 
 //	Breaks down the instruction using bitwise AND masking and shifting.
@@ -118,10 +124,10 @@ void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsi
 	*jsec = instruction & 0x3FFFFFF;	//	bits 25-0
 }
 
-
-// Kev - Done //
 /* instruction decode */
 /* 15 Points */
+
+// KEV - DONE //
 
 	//	Depending on the instruction type (determined by the op), enable, disable, or dc the corresponding signal.
 
@@ -281,9 +287,10 @@ int instruction_decode(unsigned op,struct_controls *controls)
 	}
 }
 
-// Kev //
 /* Read Register */
 /* 5 Points */
+
+// Kev - DONE //
 
 //	Read the registers addressed by r1 and r2 from Reg, 
 //	and write the read values to data1 and data2 respectively.
