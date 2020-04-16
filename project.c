@@ -92,7 +92,7 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 /* 10 Points */
 void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsigned *r2, unsigned *r3, unsigned *funct, unsigned *offset, unsigned *jsec)
 {
-
+	
 }
 
 
@@ -101,7 +101,7 @@ void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsi
 /* 15 Points */
 int instruction_decode(unsigned op,struct_controls *controls)
 {
-
+    return 0;
 }
 
 /* Read Register */
@@ -123,14 +123,14 @@ void sign_extend(unsigned offset,unsigned *extended_value)
 /* 10 Points */
 int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigned funct,char ALUOp,char ALUSrc,unsigned *ALUresult,char *Zero)
 {
-
+    return 0;
 }
 
 /* Read / Write Memory */
 /* 10 Points */
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
 {
-
+    return 0;
 }
 
 
@@ -145,6 +145,15 @@ void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,
 /* 10 Points */
 void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char Zero,unsigned *PC)
 {
+    // Update program counter to the next word
+    *PC += 4;
 
+    // If Branch equal 1 and Zero equal 1, offset the program counter by shifting it left by 2 bits
+    if(Zero == 1 && Branch == 1)
+        *PC += extended_value << 2;
+
+    // If Jump equal 1, use upper four bits, shift left by 2 bit, you'll get left with one word or 32 bits
+    if(Jump == 1)
+        *PC = (jsec << 2) | (*PC & 0xf0000000);
 }
 
