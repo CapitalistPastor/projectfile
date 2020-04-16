@@ -73,26 +73,44 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 //  Post-processor directives: function returns 1 if halt condition is met. Otherwise, return 0.
 int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 {
-  //  Check if PC is word-aligned (divisible by 4) or beyond the scope of the memory of 64 kB.
-  if(PC%4 != 0 || PC > 65536)
-  {
-    return 1;
-  }
-  else
-  {
-    //  Get the instruction from Mem
-    *instruction = Mem[PC>>2];
-    return 0;
-  }
-    
+	
+ 	 //  Check if PC is word-aligned (divisible by 4) or beyond the scope of the memory of 64 kB.
+  	if(PC%4 != 0 || PC > 65536)
+  	{
+  	  return 1;
+ 	 }
+  	else
+ 	 {
+  	  //  Get the instruction from Mem
+  	  *instruction = Mem[PC>>2];
+  	  return 0;
+ 	 }
 }
 
 
 /* instruction partition */
 /* 10 Points */
+
+//	Breaks down the instruction using bitwise AND masking and shifting.
+//	To partition the opcode, we shift the 32 bit number 26 times to the right to get only the first 6 digits.
+//	To partition the other parts of the instructions, shift the code in a similar manner to the bits desired
+//	and then use bitwise AND for however many digits we want to mask.
+//	For example, to retrieve r1, we are concerned with bits 25-21, so we would shift right 21 times first
+//	and mask the left bits.
+//	Using the 0x prefix, we can denote binary numbers in hexadecimal to keep the code cleaner.
+
 void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsigned *r2, unsigned *r3, unsigned *funct, unsigned *offset, unsigned *jsec)
 {
+	*op = instruction >> 26;	//	bits 31-26
+	*r1 = instruction >> 21 &0x1F;	//	bits 25-21
+	*r2 = instruction >> 16 &0x1F;	//	bits 20-16
+	*r3 = instruction >> 11	&0x1F;	//	bits 15-11
 	
+	//	The following don't require a shift since they approach the highest order bits.
+	
+	*funct = instruction 0x3F;
+	*offset = instruction & 0xFFFF;
+	*jsec = instruction & 0x3FFFFFF;
 }
 
 
@@ -101,7 +119,7 @@ void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsi
 /* 15 Points */
 int instruction_decode(unsigned op,struct_controls *controls)
 {
-    return 0;
+
 }
 
 /* Read Register */
@@ -123,14 +141,14 @@ void sign_extend(unsigned offset,unsigned *extended_value)
 /* 10 Points */
 int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigned funct,char ALUOp,char ALUSrc,unsigned *ALUresult,char *Zero)
 {
-    return 0;
+
 }
 
 /* Read / Write Memory */
 /* 10 Points */
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
 {
-    return 0;
+
 }
 
 
@@ -145,15 +163,6 @@ void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,
 /* 10 Points */
 void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char Zero,unsigned *PC)
 {
-    // Update program counter to the next word
-    *PC += 4;
 
-    // If Branch equal 1 and Zero equal 1, offset the program counter by shifting it left by 2 bits
-    if(Zero == 1 && Branch == 1)
-        *PC += extended_value << 2;
-
-    // If Jump equal 1, use upper four bits, shift left by 2 bit, you'll get left with one word or 32 bits
-    if(Jump == 1)
-        *PC = (jsec << 2) | (*PC & 0xf0000000);
 }
 
