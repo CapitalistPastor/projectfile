@@ -1,8 +1,12 @@
 #include "spimcore.h"
-// check again
+// **IMPORTANT**	I've added your names next to the functions that you are responsible for.
+//			Once you finish a function, please add a comment saying you're done at the top
+//			to keep us updated. Thanks.
 
 /* ALU */
 /* 10 Points */
+
+// Al//
 void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 {
 // 1.Implement the operations on input parameters A and B according to ALUControl.
@@ -68,7 +72,7 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 
 /* instruction fetch */
 /* 10 Points */
-
+/**KEVIN - DONE**/
 //  Pre-processor directives: This function takes in PC from Mem and stores it in instruction.
 //  Post-processor directives: function returns 1 if halt condition is met. Otherwise, return 0.
 int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
@@ -88,8 +92,9 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 }
 
 
-/* instruction partition */
+/* instruction partition */ 
 /* 10 Points */
+//**KEVIN - DONE**//
 
 //	Breaks down the instruction using bitwise AND masking and shifting.
 //	To partition the opcode, we shift the 32 bit number 26 times to the right to get only the first 6 digits.
@@ -114,7 +119,7 @@ void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsi
 }
 
 
-
+// Kev //
 /* instruction decode */
 /* 15 Points */
 int instruction_decode(unsigned op,struct_controls *controls)
@@ -122,6 +127,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 
 }
 
+// Kev //
 /* Read Register */
 /* 5 Points */
 void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigned *data2)
@@ -129,7 +135,7 @@ void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigne
 
 }
 
-
+// Al //
 /* Sign Extend */
 /* 10 Points */
 void sign_extend(unsigned offset,unsigned *extended_value)
@@ -137,6 +143,7 @@ void sign_extend(unsigned offset,unsigned *extended_value)
 
 }
 
+// Dimitri //
 /* ALU operations */
 /* 10 Points */
 int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigned funct,char ALUOp,char ALUSrc,unsigned *ALUresult,char *Zero)
@@ -144,6 +151,7 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 
 }
 
+// Dimitri //
 /* Read / Write Memory */
 /* 10 Points */
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
@@ -151,7 +159,7 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 
 }
 
-
+// Dimitri//
 /* Write Register */
 /* 10 Points */
 void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,char RegWrite,char RegDst,char MemtoReg,unsigned *Reg)
@@ -159,6 +167,7 @@ void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,
 
 }
 
+// Al //
 /* PC update */
 /* 10 Points */
 void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char Zero,unsigned *PC)
