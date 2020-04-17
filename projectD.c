@@ -145,7 +145,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 	//	ALUSrc:		0 if r2 register is the source (r-type), 1 if source is the sign-extended value
 	//	ALUOp:		0 = add/dc, 1 = sub, 2 = slt, 3 = sltu, 4 = and, 5 = or, 6 = sll, 7 = r-type
 	
-	//	R-type instructions
+	//	R-type instructions: add, sub, and, or, slt, sltu
 	if(op == 0)
 	{
 		controls->RegDst = '1';
@@ -160,7 +160,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 		return 0;
 	}
 	
-	//	J-type instructions 
+	//	J-type instructions: jump
 	else if(op == 2)
 	{
 		controls->RegDst = '2';
@@ -280,7 +280,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 		return 0;
 	}
 	
-	//	illegal instruction, halt condition.
+	//	illegal instruction, trigger halt condition.
 	else
 	{
 		return 1;
