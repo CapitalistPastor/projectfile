@@ -1,4 +1,4 @@
-#include <spimcore.h>
+#include "spimcore.h"
 #include <stdio.h>
 
 // **IMPORTANT**	I've added your names next to the functions that you are responsible for.
