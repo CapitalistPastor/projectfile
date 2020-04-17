@@ -1,4 +1,6 @@
-#include "spimcore.h"
+#include <spimcore.h>
+#include <stdio.h>
+
 // **IMPORTANT**	I've added your names next to the functions that you are responsible for.
 //			Once you finish a function, please add a comment saying you're done at the top
 //			to keep us updated. Thanks.
