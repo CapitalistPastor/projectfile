@@ -119,7 +119,7 @@ void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsi
 	
 	//	The following don't require a shift since they approach the highest order bits.
 	
-	*funct = instruction 0x3F;		//	bits 5-0
+	*funct = instruction & 0x3F;		//	bits 5-0
 	*offset = instruction & 0xFFFF;		//	bits 15-0
 	*jsec = instruction & 0x3FFFFFF;	//	bits 25-0
 }
