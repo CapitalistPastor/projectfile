@@ -1,68 +1,71 @@
 #include "spimcore.h"
-#include <stdio.h>
+// **IMPORTANT**	I've added your names next to the functions that you are responsible for.
+//			Once you finish a function, please add a comment saying you're done at the top
+//			to keep us updated. Thanks.
 
-//	This program includes the functions used to replicated the MIPS Datapath per given instructions
+//			Reminder: Once the code compiles, delete all unnecessary comments.
 
 
 /* ALU */
 /* 10 Points */
 
+// Al//
 void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 {
-//	1.Implement the operations on input parameters A and B according to ALUControl.
-//	2. Output the result (Z) to ALUresult.
+// 1.Implement the operations on input parameters A and B according to ALUControl.
+// 2. Output the result (Z) to ALUresult.
 
 	//  Using switches to control which ALU control gets executed
 	switch ((int) ALUControl)
 	{
-    	// 000: Z = A + B "Addition"
-	case '0':
+    // 000: Z = A + B "Addition"
+	case 000:
 		*ALUresult = A + B;
 		break;
 
-    	// 001: Z = A - B "Subtraction"
-	case '1':
+    // 001: Z = A - B "Subtraction"
+	case 001:
 		*ALUresult = A - B;
 		break;
 
-    	// 010: if A < B, Z = 1; otherwise, Z = 0 (For signed integers) "Less than"
-	case '2':
+    // 010: if A < B, Z = 1; otherwise, Z = 0 (For signed integers) "Less than"
+	case 010:
 		if ((signed)A < (signed)B)
 			*ALUresult = 1;
 		else
             *ALUresult = 0;
 		break;
 
-    	// 011: if A < B, Z = 1; otherwise, Z = 0 (For unsigned integers) "Less than"
-	case '3':
+    // 011: if A < B, Z = 1; otherwise, Z = 0 (For unsigned integers) "Less than"
+	case 011:
 		if (A < B)
 			*ALUresult = 1;
 		else
 			*ALUresult = 0;
 		break;
 
-    	// 100: Z = A AND B "bitwise AND"
-	case '4':
+    // 100: Z = A AND B "bitwise AND"
+	case 100:
 		*ALUresult = A & B;
 		break;
 
-    	// 101: Z = A OR B "bitwise OR"
-	case '5':
+    // 101: Z = A OR B "bitwise OR"
+	case 101:
 		*ALUresult = A | B;
 		break;
 
-    	// 110: Shift left B by 16 bits
-	case '6':
+    // 110: Shift left B by 16 bits
+	case 110:
         *ALUresult = B << 16;
 		break;
 
-    	// 111: Z = NOT A (bitwise)
-	case '7':
+    // 111: Z = NOT A (bitwise)
+	case 111:
 		*ALUresult = ~A;
 		break;
 	}
 
-    	// 3. Assign Zero to 1 if the result is zero; otherwise, assign 0.
+    // 3. Assign Zero to 1 if the result is zero; otherwise, assign 0.
 	if (*ALUresult == 0)
 		*Zero = 1;
 	else
@@ -73,8 +76,10 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 /* instruction fetch */
 /* 10 Points */
 
-//	Pre-processor directives: This function takes in PC from Mem and stores it in instruction.
-// 	Post-processor directives: function returns 1 if halt condition is met. Otherwise, return 0.
+/**KEVIN - DONE**/
+
+//  Pre-processor directives: This function takes in PC from Mem and stores it in instruction.
+//  Post-processor directives: function returns 1 if halt condition is met. Otherwise, return 0.
 int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 {
 	
@@ -95,6 +100,8 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 /* instruction partition */ 
 /* 10 Points */
 
+//**KEVIN - DONE**//
+
 //	Breaks down the instruction using bitwise AND masking and shifting.
 //	To partition the opcode, we shift the 32 bit number 26 times to the right to get only the first 6 digits.
 //	To partition the other parts of the instructions, shift the code in a similar manner to the bits desired
@@ -112,7 +119,7 @@ void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsi
 	
 	//	The following don't require a shift since they approach the highest order bits.
 	
-	*funct = instruction & 0x3F;		//	bits 5-0
+	*funct = instruction 0x3F;		//	bits 5-0
 	*offset = instruction & 0xFFFF;		//	bits 15-0
 	*jsec = instruction & 0x3FFFFFF;	//	bits 25-0
 }
@@ -120,7 +127,9 @@ void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsi
 /* instruction decode */
 /* 15 Points */
 
-//	Depending on the instruction type (determined by the op), enable, disable, or dc the corresponding signal.
+// KEV - DONE //
+
+	//	Depending on the instruction type (determined by the op), enable, disable, or dc the corresponding signal.
 
 int instruction_decode(unsigned op,struct_controls *controls)
 {
@@ -136,7 +145,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 	//	ALUSrc:		0 if r2 register is the source (r-type), 1 if source is the sign-extended value
 	//	ALUOp:		0 = add/dc, 1 = sub, 2 = slt, 3 = sltu, 4 = and, 5 = or, 6 = sll, 7 = r-type
 	
-	//	R-type instructions: add, sub, and, or, slt, sltu
+	//	R-type instructions
 	if(op == 0)
 	{
 		controls->RegDst = '1';
@@ -151,7 +160,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 		return 0;
 	}
 	
-	//	J-type instructions: jump
+	//	J-type instructions 
 	else if(op == 2)
 	{
 		controls->RegDst = '2';
@@ -271,7 +280,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 		return 0;
 	}
 	
-	//	illegal instruction, trigger halt condition.
+	//	illegal instruction, halt condition.
 	else
 	{
 		return 1;
@@ -280,6 +289,8 @@ int instruction_decode(unsigned op,struct_controls *controls)
 
 /* Read Register */
 /* 5 Points */
+
+// Kev - DONE //
 
 //	Read the registers addressed by r1 and r2 from Reg, 
 //	and write the read values to data1 and data2 respectively.
@@ -290,9 +301,9 @@ void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigne
 	*data2 = Reg[r2];
 }
 
+// Al //
 /* Sign Extend */
 /* 10 Points */
-
 void sign_extend(unsigned offset,unsigned *extended_value)
 {
     // Shifting to the sign bit (requires a shift of 15)
@@ -306,12 +317,15 @@ void sign_extend(unsigned offset,unsigned *extended_value)
         *extended_value = offset & 0x0000ffff;
 }
 
+// Dimitri //
 /* ALU operations */
 /* 10 Points */
-
 int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigned funct,char ALUOp,char ALUSrc,unsigned *ALUresult,char *Zero)
 {
+	// check if extended value will be needed
     if (ALUSrc == '0'){
+		// check what op is being executed
+		// 32 add, 34 sub, 36 and, 37 or, 42 slt, 43 sltu
 		if(funct == 32){
 			ALU(data1, data2, '0', ALUresult, Zero); 
 			return 0; 
@@ -345,6 +359,7 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
         }
 	}
 	else if (ALUSrc == '1'){
+		// ops: 0 addi, 2 slti, 3 sltiu, 6 lui
 		if(ALUOp == '0'){
 			ALU(data1, extended_value, ALUOp, ALUresult, Zero); 
 			return 0;
@@ -370,37 +385,45 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 	}
 }
 
+// Dimitri //
 /* Read / Write Memory */
 /* 10 Points */
-
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
-{
+{		
+		// check if it's aligned and is allowed to write/read
         if ((ALUresult % 4) != 0 && (MemWrite == '1' || MemRead == '1')){
             return 1;
         }
         if (ALUresult > 65536 && (MemWrite == '1' || MemRead == '1')){
             return 1;
         }
+		// check if writting to mem
         ALUresult = ALUresult >> 2;
         if (MemWrite == '1'){
             Mem[ALUresult] = data2;
         }
+		// chech if reading from mem
         if (MemRead == '1'){
             *memdata = Mem[ALUresult];
         }
+		// halt
         return 0;
 }
 
+// Dimitri//
 /* Write Register */
 /* 10 Points */
-
 void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,char RegWrite,char RegDst,char MemtoReg,unsigned *Reg)
 {
+	// check if writting is allowed
     if (RegWrite == '1'){
+		// check if writing from memory, if not, ALU result
         if (MemtoReg == '0'){
+			// check if writting to r2
             if (RegDst == '0'){
                 Reg[r2] = ALUresult;
             }
+			// else, r3
             else if (RegDst == '1'){
                 Reg[r3] = ALUresult;
             }
@@ -417,9 +440,9 @@ void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,
 
 }
 
+// Al //
 /* PC update */
 /* 10 Points */
-
 void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char Zero,unsigned *PC)
 {
 	// Update program counter to the next word
